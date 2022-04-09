@@ -1,0 +1,32 @@
+package ro.tuc.ds2020.bll;
+
+import ro.tuc.ds2020.bll.validators.InvalidPriceValidator;
+import ro.tuc.ds2020.bll.validators.InvalidQuantityValidator;
+import ro.tuc.ds2020.bll.validators.Validator;
+import ro.tuc.ds2020.dao.ProductDAO;
+import ro.tuc.ds2020.model.Product;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductBLL {
+
+    private List<Validator<Product>> validatorList;
+    private ProductDAO productDAO;
+
+    public ProductBLL(){
+        validatorList = new ArrayList<>();
+        validatorList.add( new InvalidQuantityValidator() );
+        validatorList.add( new InvalidPriceValidator() );
+
+        productDAO = new ProductDAO();
+    }
+
+    public List<Product> findAll() { return  productDAO.findAll(); }
+
+    public Product insert( Product product ) { return productDAO.insert( product ); }
+
+    public Product updateById( Product product ) { return productDAO.update( product ); }
+
+    public Product findByName( String name ) { return productDAO.findByName( name ); }
+}
