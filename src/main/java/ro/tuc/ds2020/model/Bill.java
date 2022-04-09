@@ -71,14 +71,23 @@ public class Bill {
         this.timestamp = timestamp;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
-        return "Order{" +
+        return "Bill{" +
                 "id=" + id +
                 ", clientid=" + clientid +
                 ", productid=" + productid +
                 ", quantity=" + quantity +
                 ", timestamp=" + timestamp +
+                ", price=" + price +
                 '}';
     }
 }
