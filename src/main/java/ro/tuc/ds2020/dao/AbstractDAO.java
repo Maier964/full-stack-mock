@@ -5,7 +5,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +44,13 @@ public class AbstractDAO<T> {
 
                 if ( fieldIt.getName().equals("timestamp") ){
                     query.append(" current_timestamp ");
+                    query.append(",");
+                    continue;
+                }
+
+                // Cheap
+                if ( fieldIt.getName().equals("id") ){
+                    query.append( (int)((Math.random() * (999999) )));
                     query.append(",");
                     continue;
                 }
