@@ -21,7 +21,7 @@ public class Test {
         ProductBLL productBLL = new ProductBLL();
         BillBLL orderBLL = new BillBLL();
 
-        Client result = null;
+        Product result = null;
 
         Product testProd = new Product(1, "TestProduct", 2000, 43);
 
@@ -30,8 +30,9 @@ public class Test {
 
         Bill testBill = new Bill( 122, 2331, 1, 20, Timestamp.from(Instant.now()), 12);
 
-        for( int i = 0; i < 10; i++ )
-            result = clientBLL.insert(test);
+        //result = clientBLL.findByNameAndPassword("admin", "adm22in");
+
+        result = productBLL.insert( new Product( 20, "Hubba Bubba", 200, 3 ) );
 
         if ( result == null )
             System.out.println("Fail");

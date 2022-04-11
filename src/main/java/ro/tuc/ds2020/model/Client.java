@@ -77,13 +77,14 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", address='" + address + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
+        return "{" +
+                "\"id\":" + id +
+                ", \"name\":\"" + name + '\"' +
+                ", \"password\":\"" + password + '\"' +
+                ", \"address\":\"" + address + '\"' +
+                ", \"email\":\"" + email + '\"' +
+                ", \"age\":" + age +
                 '}';
     }
+
 }

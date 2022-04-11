@@ -59,8 +59,10 @@ class Register extends Component {
         age: this.state.age
     }).then( function(response){
         console.log( response.data )
-        if ( response.data != null )
+        if ( response.data ===  " <b> Success! </b> " )
             alert("Success!");
+        else 
+            alert("Unexpected error. Possible errors:\n* server was busy\n* username already taken");
     } )
 
   }

@@ -22,6 +22,9 @@ public class ClientBLL {
         clientDAO = new ClientDAO();
     }
 
+
+    // TODO: validate inputs by iterating trough validators
+
     public List<Client> findAll() { return clientDAO.findAll(); }
 
     public Client insert( Client client ) { return clientDAO.insert( client ); }
@@ -29,5 +32,16 @@ public class ClientBLL {
     public Client updateById( Client client ) { return clientDAO.update( client ); }
 
     public Client findByName( String name ) { return clientDAO.findByName( name ); }
+
+    public Client findByNameAndPassword( String name, String password ) {
+        return clientDAO.findByNameAndPassword( name, password ); }
+
+    public Client findByEmailAndPassword( String email, String password ) {
+        return clientDAO.findByEmailAndPassword( email, password );
+    }
+
+    public Client findByEmail( String email ){
+        return clientDAO.findByEmail( email );
+    }
 
 }

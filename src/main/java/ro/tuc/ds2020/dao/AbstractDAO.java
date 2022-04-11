@@ -181,7 +181,7 @@ public class AbstractDAO<T> {
             return null;
         }
 
-        private List<T> createObjects(ResultSet resultSet) {
+        protected List<T> createObjects(ResultSet resultSet) {
             List<T> list = new ArrayList<T>();
             Constructor[] ctors = type.getDeclaredConstructors();
             Constructor ctor = null;
@@ -251,14 +251,16 @@ public class AbstractDAO<T> {
             Connection connection = null;
             PreparedStatement statement = null;
             ResultSet resultSet = null;
+            List<T> finalRes = null;
             String query = createSelectQuery("name");
             try {
                 connection = ConnectionFactory.getConnection();
                 statement = connection.prepareStatement(query);
                 statement.setString( 1,name);
                 resultSet = statement.executeQuery();
-
-                return createObjects(resultSet).get(0);
+                finalRes = createObjects(resultSet);
+                if ( !finalRes.isEmpty() )
+                    return finalRes.get(0);
             } catch (SQLException e) {
                 LOGGER.log(Level.WARNING, type.getName() + "DAO:findByName " + e.getMessage());
             } finally {

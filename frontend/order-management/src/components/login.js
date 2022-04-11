@@ -1,17 +1,24 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
   FacebookLoginButton,
   InstagramLoginButton
 } from "react-social-login-buttons";
+import Feed from "./feed";
+
 
 class Login extends Component {
+
   constructor() {
     super();
 
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      redirect: false,
+      admin: false,
+      id: 0,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,19 +32,53 @@ class Login extends Component {
 
     this.setState({
       [name]: value
-    });
+    })
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
+    var self = this
+
     console.log("The form was submitted with the following data:");
     console.log(this.state);
+    // Fetch request in database (currently only have name and password, not email and password)
+
+    if ( this.state.email === "" || this.state.password === "" ){
+        alert("Invalid credentials")
+        return;
+    }
+
+    axios.get('http://localhost:1234/findByEmailAndPassword',
+    { params: { email: this.state.email, password: this.state.password } }
+    ).then( 
+        function( response ){
+            if ( response.data !== "No user matches these credentials." ){
+                alert("Success!");
+                console.log(self.state.id)
+                self.state.id = response.data.id
+                console.log( self.state.id )
+                self.setState( { redirect:true } )
+                return;
+            }
+            else
+                alert("Invalid credentials!");
+                return;
+        }
+     ).catch( function(error) {
+         console.log(error);
+         alert("Invalid credentials!");
+     })
+    
+
+
   }
+
 
   render() {
     return (
-      <div className="formCenter">
+      <div>
+           { this.state.redirect ? <Feed email={this.state.email} id={this.state.id} /> :  <div className="formCenter">
         <form className="formFields" onSubmit={this.handleSubmit}>
           <div className="formField">
             <label className="formFieldLabel" htmlFor="email">
@@ -87,6 +128,8 @@ class Login extends Component {
           </div>
         </form>
       </div>
+       }
+       </div>
     );
   }
 }

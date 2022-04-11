@@ -6,27 +6,24 @@ import org.springframework.web.bind.annotation.*;
 import ro.tuc.ds2020.bll.BillBLL;
 import ro.tuc.ds2020.bll.ClientBLL;
 import ro.tuc.ds2020.bll.ProductBLL;
-import ro.tuc.ds2020.model.Bill;
-import ro.tuc.ds2020.model.Client;
-import ro.tuc.ds2020.model.Product;
 
 
 @RestController
-@CrossOrigin
-public class IndexController {
+@CrossOrigin(origins = "http://localhost:3000")
+public class UtilController {
 
     ClientBLL clientBLL = new ClientBLL();
     ProductBLL productBLL = new ProductBLL();
     BillBLL billBLL = new BillBLL();
 
-
+    @CrossOrigin(origins = "http://localost:3000")
     @GetMapping(value = "/")
     public ResponseEntity<String> getStatus() {
         return new ResponseEntity<>("Backend running..", HttpStatus.FORBIDDEN);
     }
 
-
     @GetMapping("/list")
+    @CrossOrigin(origins = "http://localost:3000")
     public ResponseEntity<String> listAll( @RequestParam String table ) {
 
         switch (table){
@@ -39,33 +36,6 @@ public class IndexController {
             default:
                 return new ResponseEntity<>( "Invalid request", HttpStatus.BAD_REQUEST );
         }
-    }
-
-    // TODO: test these
-
-    @PostMapping("/addclient")
-    public ResponseEntity<String> addClient( @RequestBody Client client  ){
-        if ( clientBLL.insert( client ) != null )
-            return new ResponseEntity<>(" <b> Success! </b> ", HttpStatus.OK);
-        else
-            return new ResponseEntity<>(" Failed to add user. ", HttpStatus.BAD_REQUEST);
-    }
-
-    @PostMapping("/addproduct")
-    public ResponseEntity<String> addProduct( @RequestBody Product product  ){
-        if ( productBLL.insert( product ) != null )
-            return new ResponseEntity<>(" <b> Success! </b> ", HttpStatus.OK);
-        else
-            return new ResponseEntity<>(" Failed to add user. ", HttpStatus.BAD_REQUEST);
-    }
-
-
-    @PostMapping("/addbill")
-    public ResponseEntity<String> addClient( @RequestBody Bill bill  ){
-        if ( billBLL.insert( bill ) != null )
-            return new ResponseEntity<>(" <b> Success! </b> ", HttpStatus.OK);
-        else
-            return new ResponseEntity<>(" Failed to add user. ", HttpStatus.BAD_REQUEST);
     }
 
 

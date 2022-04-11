@@ -81,13 +81,13 @@ public class Bill {
 
     @Override
     public String toString() {
-        return "Bill{" +
-                "id=" + id +
-                ", clientid=" + clientid +
-                ", productid=" + productid +
-                ", quantity=" + quantity +
-                ", timestamp=" + timestamp +
-                ", price=" + price +
+        return "{" +
+                "\"id\":" + id +
+                ", \"clientid\":" + clientid +
+                ", \"productid\":" + productid +
+                ", \"quantity\":" + quantity +
+                ", \"timestamp\":" + timestamp +
+                ", \"price\":" + price +
                 '}';
     }
 }
