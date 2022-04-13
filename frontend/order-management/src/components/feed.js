@@ -11,21 +11,8 @@ class Feed extends Component {
         super();
 
         this.state = {
-            admin:false,
         }
     }
-
-    componentDidMount(){
-        if ( this.props.email === "admin@administrator.adm" ) 
-        {
-            this.state.admin = true
-
-            console.log("Macar intrii?")
-        }
-    }
-
-
-
 
   render() {
 
@@ -33,14 +20,11 @@ class Feed extends Component {
 
     return (
         <div>
-        { this.state.admin ? <AdminPanel/> : <div>
         <div> Hello, {this.props.email}! </div>
         <br>
         </br>
         <EnhancedTable email={this.props.email} id={this.props.id}/>
-        </div> }
-        </div> 
-        
+        </div>         
     );
   }
 }

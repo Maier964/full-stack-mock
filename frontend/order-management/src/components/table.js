@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import {useState, useEffect} from 'react';
+import { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import axios from "axios";
 
@@ -209,8 +209,7 @@ export default function EnhancedTable( email, id ) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [ rows, setRows ] = React.useState([{}]);
   const [selected, setSelected] = React.useState([]);
-  const [clientId, setClientId] = React.useState(0);
-  const [productId, setProductId] = React.useState(0);
+  const [selectedPrice, setSelectedPrice] = React.useState([]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -224,24 +223,38 @@ export default function EnhancedTable( email, id ) {
     console.log( selected );
 
     // Here i got the id of the user
-    console.log( email )
+    console.log( email.id );
+
+    console.log( selectedPrice );
 
     var i;
 
     for ( i = 0; i < selected.length; i++ )
     {
-        axios.post()
+        axios.post("http://localhost:1234/addbill",
+        {
+            id: 0, // redundant, same story as on the register component (line 54)
+            clientid: email.id,
+            productid: selected[i],
+            quantity: 1,
+            timestamp: "", // again, anything will do here, sql parses the timestamp field as the "current_timestamp" in-built function
+            price: selectedPrice[i]
+        })
     }
 
-
-    // Clear selected products
-    //setSelected( [] );
+    alert("Success!");
+            
+    //Clear selected products
+    setSelected( [] );
+    setSelectedPrice( [] );
 };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.id);
+      const newSelectedPrice = rows.map( (n) => n.price )
       setSelected(newSelecteds);
+      setSelectedPrice(newSelectedPrice);
       return;
     }
     setSelected([]);
@@ -265,7 +278,7 @@ export default function EnhancedTable( email, id ) {
 
 }, []);
 
-  const handleClick = (event, name) => {
+  const handleClick = (event, name, price) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
@@ -283,6 +296,25 @@ export default function EnhancedTable( email, id ) {
     }
 
     setSelected(newSelected);
+
+    const selectedP = selectedPrice.indexOf(price);
+    let newProductSelected = [];
+
+    if (selectedP === -1) {
+      newProductSelected = newProductSelected.concat(selectedPrice, price);
+    } else if (selectedP === 0) {
+      newProductSelected = newProductSelected.concat(selectedPrice.slice(1));
+    } else if (selectedP === selectedPrice.length - 1) {
+      newProductSelected = newProductSelected.concat(selectedPrice.slice(0, -1));
+    } else if (selectedP > 0) {
+      newProductSelected = newProductSelected.concat(
+        selectedPrice.slice(0, selectedP),
+        selectedPrice.slice(selectedP + 1),
+      );
+    }
+
+    setSelectedPrice( newProductSelected );
+
   };
 
   const handleChangePage = (event, newPage) => {
@@ -335,7 +367,7 @@ export default function EnhancedTable( email, id ) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      onClick={(event) => handleClick(event, row.id, row.price)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}

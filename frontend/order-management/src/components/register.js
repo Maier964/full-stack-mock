@@ -51,7 +51,7 @@ class Register extends Component {
     
     axios.post("http://localhost:1234/addclient", 
     {
-        id: 45, // Try to be able to do requests without id's.
+        id: 45, // This value is redundant, id can be anything, it will be randomly generated in the backend anyways.. it just need to be here for the "id" json field
         name: this.state.name,
         password: this.state.password,
         address: this.state.address,

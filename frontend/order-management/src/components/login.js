@@ -5,6 +5,7 @@ import {
   FacebookLoginButton,
   InstagramLoginButton
 } from "react-social-login-buttons";
+import AdminPanel from "./adminpanel";
 import Feed from "./feed";
 
 
@@ -18,6 +19,7 @@ class Login extends Component {
       password: "",
       redirect: false,
       admin: false,
+      noredirect:true,
       id: 0,
     };
 
@@ -58,7 +60,16 @@ class Login extends Component {
                 console.log(self.state.id)
                 self.state.id = response.data.id
                 console.log( self.state.id )
-                self.setState( { redirect:true } )
+                if ( response.data.name === "admin" )
+                {
+                    self.setState ( { admin:true } );
+                    self.setState( { noredirect:false } );
+                }
+                else
+                {
+                    self.setState( { redirect:true } );
+                    self.setState( { noredirect:false } );
+                }
                 return;
             }
             else
@@ -76,62 +87,61 @@ class Login extends Component {
 
 
   render() {
+
     return (
-      <div>
-           { this.state.redirect ? <Feed email={this.state.email} id={this.state.id} /> :  <div className="formCenter">
-        <form className="formFields" onSubmit={this.handleSubmit}>
-          <div className="formField">
-            <label className="formFieldLabel" htmlFor="email">
-              E-Mail Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="formFieldInput"
-              placeholder="Enter your email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
-          </div>
+    <div>
+        { this.state.admin && ( <AdminPanel/> ) }
+        { this.state.redirect && ( <Feed email={this.state.email} id={this.state.id} /> ) }
+        { this.state.noredirect && ( <div className="formCenter">
+         <form className="formFields" onSubmit={this.handleSubmit}>
+           <div className="formField">
+             <label className="formFieldLabel" htmlFor="email">
+               E-Mail Address
+             </label>
+             <input
+               type="email"
+               id="email"
+               className="formFieldInput"
+               placeholder="Enter your email"
+               name="email"
+               value={this.state.email}
+               onChange={this.handleChange}
+             />
+           </div>
 
-          <div className="formField">
-            <label className="formFieldLabel" htmlFor="password">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="formFieldInput"
-              placeholder="Enter your password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
-            />
-          </div>
+           <div className="formField">
+             <label className="formFieldLabel" htmlFor="password">
+               Password
+             </label>
+             <input
+               type="password"
+               id="password"
+               className="formFieldInput"
+               placeholder="Enter your password"
+               name="password"
+               value={this.state.password}
+               onChange={this.handleChange}
+             />
+           </div>
 
-          <div className="formField">
-            <button className="formFieldButton">Login</button>{" "}
-            <Link to="/" className="formFieldLink">
-              Create an account
-            </Link>
-          </div>
+           <div className="formField">
+             <button className="formFieldButton">Login</button>{" "}
+             <Link to="/" className="formFieldLink">
+               Create an account
+             </Link>
+           </div>
 
-          <div className="socialMediaButtons">
-            <div className="facebookButton">
-              <FacebookLoginButton onClick={() => alert("TODO")} />
-            </div>
+           <div className="socialMediaButtons">
+             <div className="facebookButton">
+               <FacebookLoginButton onClick={() => alert("TODO")} />
+             </div>
 
-            <div className="instagramButton">
-              <InstagramLoginButton onClick={() => alert("TODO")} />
-            </div>
-          </div>
-        </form>
-      </div>
-       }
-       </div>
-    );
-  }
-}
-
+             <div className="instagramButton">
+               <InstagramLoginButton onClick={() => alert("TODO")} />
+             </div>
+           </div>
+         </form>
+       </div> ) }
+    </div>);
+  }}
 export default Login;

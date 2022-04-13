@@ -44,4 +44,6 @@ public class ClientBLL {
         return clientDAO.findByEmail( email );
     }
 
+    public String delete( Client client ) { return clientDAO.delete(client); }
+
 }

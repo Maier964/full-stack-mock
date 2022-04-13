@@ -26,4 +26,6 @@ public class BillBLL {
     public Bill updateById(Bill bill) { return orderDAO.update(bill); }
 
     public Bill findByName(String name ) { return orderDAO.findByName( name ); }
+
+    public String delete(Bill bill) { return orderDAO.delete(bill); }
 }

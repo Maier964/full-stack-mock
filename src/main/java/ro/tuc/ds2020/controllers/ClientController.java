@@ -50,5 +50,13 @@ public class ClientController {
             return new ResponseEntity<>("No user matches these credentials.", HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/deleteclient")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<String> deleteClient( @RequestParam Integer id ){
+        if ( clientBLL.delete( new Client( id, "anyName", "anyPass", "anyAddr", "anyEmail", 12 ) ) != null )
+            return new ResponseEntity<>( " <b> Success! </b> ", HttpStatus.OK);
+        else
+            return new ResponseEntity<>("No user matches these credentials.", HttpStatus.NOT_FOUND);
+    }
 
 }

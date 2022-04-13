@@ -34,6 +34,17 @@ public class AbstractDAO<T> {
             return sb.toString();
         }
 
+        private String createDeleteQuery(T t){
+            try {
+                Field idField = type.getDeclaredFields()[0];
+                idField.setAccessible(true);
+                return "DELETE from " + type.getSimpleName() + " where id=" + idField.get(t);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
         private String createInsertQuery(T t) {
             StringBuilder query = new StringBuilder("INSERT into " + type.getSimpleName() +
                     " VALUES(");
@@ -239,6 +250,24 @@ public class AbstractDAO<T> {
                 return t;
             } catch (SQLException e) {
                 LOGGER.log(Level.WARNING, type.getName() + "DAO:update " + e.getMessage());
+                return null;
+            } finally {
+                ConnectionFactory.close(statement);
+                ConnectionFactory.close(connection);
+            }
+        }
+
+        public String delete(T t){
+            Connection connection = null;
+            PreparedStatement statement = null;
+            String query = createDeleteQuery(t);
+            try {
+                connection = ConnectionFactory.getConnection();
+                statement = connection.prepareStatement(query);
+                statement.executeUpdate();
+                return "OK!";
+            } catch (SQLException e) {
+                LOGGER.log(Level.WARNING, type.getName() + "DAO:delete " + e.getMessage());
                 return null;
             } finally {
                 ConnectionFactory.close(statement);

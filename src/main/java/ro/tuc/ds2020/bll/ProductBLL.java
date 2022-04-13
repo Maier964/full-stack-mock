@@ -29,4 +29,6 @@ public class ProductBLL {
     public Product updateById( Product product ) { return productDAO.update( product ); }
 
     public Product findByName( String name ) { return productDAO.findByName( name ); }
+
+    public String delete( Product product ) { return productDAO.delete( product ); }
 }
