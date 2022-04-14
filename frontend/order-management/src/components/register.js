@@ -63,6 +63,8 @@ class Register extends Component {
             alert("Success!");
         else 
             alert("Unexpected error. Possible errors:\n* server was busy\n* username already taken");
+    } ).catch( function(error){
+        alert("Username already taken!");
     } )
 
   }

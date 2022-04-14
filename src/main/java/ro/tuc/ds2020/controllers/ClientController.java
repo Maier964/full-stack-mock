@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.*;
 import ro.tuc.ds2020.bll.ClientBLL;
 import ro.tuc.ds2020.model.Client;
 
+/**
+ * Rest API with client functionalities
+ * Supports adding , deleting, finding clients
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class ClientController {

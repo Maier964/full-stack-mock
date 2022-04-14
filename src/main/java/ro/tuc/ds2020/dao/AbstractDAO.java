@@ -13,6 +13,10 @@ import ro.tuc.ds2020.connection.ConnectionFactory;
 import ro.tuc.ds2020.util.Hasher;
 
 
+/**
+ *
+ * @param <T> The class which the DAO will work with
+ */
 public class AbstractDAO<T> {
         protected static final Logger LOGGER = Logger.getLogger(AbstractDAO.class.getName());
 
@@ -24,7 +28,12 @@ public class AbstractDAO<T> {
 
         }
 
-        private String createSelectQuery(String field) {
+    /**
+     * Creates a select query to be passed to the JDBC execution unit
+     * @param field The field we are selecting with regard to
+     * @return The resulting query
+     */
+    private String createSelectQuery(String field) {
             StringBuilder sb = new StringBuilder();
             sb.append("SELECT ");
             sb.append(" * ");
@@ -153,7 +162,6 @@ public class AbstractDAO<T> {
             try{
                 connection = ConnectionFactory.getConnection();
                 statement = connection.prepareStatement(query);
-                // setInt ??
                 resultSet = statement.executeQuery();
 
                 return createObjects(resultSet);
@@ -180,8 +188,9 @@ public class AbstractDAO<T> {
                 statement = connection.prepareStatement(query);
                 statement.setInt(1, id);
                 resultSet = statement.executeQuery();
-
-                return createObjects(resultSet).get(0);
+                List<T> result = createObjects(resultSet);
+                if ( result != null )
+                    return result.get(0);
             } catch (SQLException e) {
                 LOGGER.log(Level.WARNING, type.getName() + "DAO:findById " + e.getMessage());
             } finally {

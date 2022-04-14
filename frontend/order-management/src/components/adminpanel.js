@@ -13,7 +13,6 @@ class AdminPanel extends Component {
           name: "",
           quantity: 0,
           price: 0,
-          clientName: "",
           listClient:false
         };
 
@@ -21,6 +20,7 @@ class AdminPanel extends Component {
         this.handleAdd = this.handleAdd.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleList = this.handleList.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
 
 
@@ -67,11 +67,7 @@ class AdminPanel extends Component {
             alert("Invalid values..")
             return;
         }
-        
-        if (this.props.sanitise === false){
-            alert("Invalid values..")
-            return;
-        }
+    
 
         // Check if product exists and update
         let self = this;
@@ -95,7 +91,7 @@ class AdminPanel extends Component {
                         alert("Unexpected error. Failed to update product");
                 } )
             }
-            else
+        } ).catch( function(error){
             alert("Cannot update product. Product doesn't exist.\n Make sure that the name is typed correctly")
         } )
     }
@@ -105,6 +101,31 @@ class AdminPanel extends Component {
         this.setState( { listClient:true } )
         else
         this.setState( { listClient:false } )
+    }
+
+    handleDelete(){
+        //sanitise
+        if ( this.state.name === "" )
+        {
+            alert("Invalid values..")
+            return;
+        }
+
+        // find product first
+        axios.get("http://localhost:1234/findproduct?name=" + this.state.name)
+        .then( function(response){
+            axios.get("http://localhost:1234/deleteproduct?id=" + response.data.id)
+            .then( function(response2){
+                if ( response2.data === " <b> Success! </b> " )
+                    alert("Success!")
+            } ).catch( function(error){
+                alert("Product is part of a currently on-going transaction. Cannot delete")
+            } )
+        } ).catch( function(error){
+            alert("Product not found");
+        }).catch( function( error ){
+            alert("Product not found")
+        } )
     }
 
 
@@ -168,7 +189,7 @@ class AdminPanel extends Component {
 
            
            <div className="formField">
-             <button className="formFieldButton">Delete Product</button>{" "}
+             <button className="formFieldButton" onClick={this.handleDelete}>Delete Product (By name)</button>{" "}
            </div>
 
            

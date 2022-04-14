@@ -21,7 +21,7 @@ public class Test {
         ProductBLL productBLL = new ProductBLL();
         BillBLL orderBLL = new BillBLL();
 
-        Product result = null;
+        String result = null;
 
         Product testProd = new Product(1, "TestProduct", 2000, 43);
 
@@ -32,7 +32,8 @@ public class Test {
 
         //result = clientBLL.findByNameAndPassword("admin", "adm22in");
 
-        result = productBLL.insert( new Product( 20, "Hubba Bubba", 200, 3 ) );
+        result = clientBLL.delete( new Client(774915, "Asdasn", "sdamin", "Nasdsad/A", "admin@asdasdasdasdas.adm"
+                , 32) );
 
         if ( result == null )
             System.out.println("Fail");

@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.tuc.ds2020.bll.ProductBLL;
-import ro.tuc.ds2020.model.Client;
 import ro.tuc.ds2020.model.Product;
 
 @RestController
